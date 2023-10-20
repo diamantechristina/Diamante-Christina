@@ -38,16 +38,3 @@ public class Papsy{
       }
    }
 }
-
-/* if(!isInteger(mealsQty[i]))
-      i--;
-      
-   static boolean isInteger(String testInput){
-      try{
-         Integer.parseInt(testInput);
-         return true;
-      }catch(Exception e){
-         return false;
-      }
-   }
-*/
