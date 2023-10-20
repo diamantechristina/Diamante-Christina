@@ -37,33 +37,20 @@ public class LatestPEMDAS {
         double result = 0;
         boolean addTerm = true;
         for(int i= 0; i< terms.length;i++){
-            // Example: 45*6*(7-18)/23 -> 6/9*(45*6*-11/23)
-            // IF statement para kung may "*" or "/" sa pinaka ulihan sa usa ka element like 45*6* or 3*5/
-            // kay gi split man tungod sa minus sang -11... ang array mahimo nga [45*6*, 11/23]
             if(terms[i].length()-1>0 && (terms[i].charAt(terms[i].length()-1)=='*'
                 ||  terms[i].charAt(terms[i].length()-1)=='/' ||  terms[i].charAt(terms[i].length()-1)=='^')){
-                terms[i] += "-"+terms[i+1]; // ini nga line iya gi merge ang duwa ka element na nasayop pag split...
-                                            // from [45*6*, 11/23] to [45*6*-11/23, 11/23]
+                terms[i] += "-"+terms[i+1];
+                for(int j=i+1;j<terms.length-1;j++){
+                    terms[j] = terms[j+1];              
+                }                                       
 
-                for(int j=i+1;j<terms.length-1;j++){    // ini nga for loop tig move lang sang mga elements to the left..
-                    terms[j] = terms[j+1];              // like [ ,1,2,3,4] to [1,2,3,4,4]
-                }                                       // for safety measures lng ni nga for loop in case may extra element
+                String[] tempTerms = new String[terms.length-1]; 
 
-                String[] tempTerms = new String[terms.length-1]; // temporary array para tig contain sa bag o na array
-                                                                 // pero ang size sini na array kay 1 lower compared
-                                                                 // sa original na array
+                for (int j = 0; j < terms.length - 1; j++) {   
+                    tempTerms[j] = terms[j];                   
+                }                                              
 
-                for (int j = 0; j < terms.length - 1; j++) {    // ini nga for loop para na ni tig erase sa pinaka last na element
-                    tempTerms[j] = terms[j];                    // gamit na ang temporary na array na wa pa sang unod..
-                }                                               // example ang original na array ara sang [1,2,3,4,4],
-                                                                // gicopy ang unod sang original array didto sa temporary array
-                                                                // pero wa na gi apil ang last element
-
-                terms = tempTerms; // ini nga line kay gicopy ang unod sa tempTerms didto na sa original na array
-
-                //GIBUHAT NI KAY DI NA KAILANGAN ADTONG GIMERGED NA ELEMENT LIKE SA EXAMPLE SA TAAS..
-                // "from [45*6*, 11/23] to [45*6*-11/23, 11/23]" ANG 11/23
-                // so ang final na nga array kay [45*6*-11/23] instead nga [45*6*, 11/23]
+                terms = tempTerms; 
             }
         }
         if(terms[0].isEmpty() && terms.length==2) return e;
